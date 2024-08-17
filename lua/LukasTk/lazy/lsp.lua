@@ -59,7 +59,28 @@ return {
             }
         })
 
+        -- Define custom highlight groups for cmp menu
+        vim.cmd([[
+            highlight CmpItemAbbrDeprecated guifg=#7E8294 gui=strikethrough
+            highlight CmpItemAbbrMatch guifg=#7DCFFF
+            highlight CmpItemAbbrMatchFuzzy guifg=#7DCFFF
+            highlight CmpItemKindVariable guifg=#C3E88D
+            highlight CmpItemKindInterface guifg=#C3E88D
+            highlight CmpItemKindText guifg=#C3E88D
+            highlight CmpItemKindFunction guifg=#F78C6C
+            highlight CmpItemKindMethod guifg=#F78C6C
+            highlight CmpItemKindKeyword guifg=#FFCB6B
+            highlight CmpItemKindProperty guifg=#FFCB6B
+            highlight CmpItemKindUnit guifg=#FFCB6B
+        ]])
+
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
+
+        local icons = {
+            Text = "󰙩",
+            Variables = "",
+            Snippet = "󰅴",
+        }
 
         cmp.setup({
             completion = { completeopt = 'menu, menuone, noinsert'},
@@ -79,7 +100,39 @@ return {
                 { name = 'luasnip' },
             }, {
                 { name = 'buffer' },
-            })
+            }),
+        formatting = {
+                format = function(entry, vim_item)
+                    vim_item.kind = ({
+                        Text = "",
+                        Method = "󰆧",
+                        Function = "󰊕",
+                        Constructor = "",
+                        Field = "󰇽",
+                        Variable = "󰂡",
+                        Class = "󰠱",
+                        Interface = "",
+                        Module = "",
+                        Property = "󰜢",
+                        Unit = "",
+                        Value = "󰎠",
+                        Enum = "",
+                        Keyword = "󰌋",
+                        Snippet = "",
+                        Color = "󰏘",
+                        File = "󰈙",
+                        Reference = "",
+                        Folder = "󰉋",
+                        EnumMember = "",
+                        Constant = "󰏿",
+                        Struct = "",
+                        Event = "",
+                        Operator = "󰆕",
+                        TypeParameter = "󰅲",
+                    })[vim_item.kind] .. " " .. vim_item.kind
+                    return vim_item
+                end,
+            },
         })
 
         vim.diagnostic.config({

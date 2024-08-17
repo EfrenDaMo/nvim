@@ -41,5 +41,9 @@ return {
         }
 
         vim.treesitter.language.register("templ", "templ")
+
+        -- Custom highlighting for variables
+        vim.api.nvim_set_hl(0, "@variable", { link = "Identifier" })
+        vim.api.nvim_set_hl(0, "@variable.builtin", { link = "Special" })
     end
 }
