@@ -15,14 +15,14 @@ vim.keymap.set("n", "<leader>wq", "<cmd>wq<CR>")
 vim.keymap.set("n", "<leader>qq", "<cmd>q<CR>")
 
 -- Arrow Key disabaling
-vim.keymap.set("n", "<left>", '<cmd>echo "Use h to move" <CR>')
-vim.keymap.set("n", "<right>", '<cmd>echo "Use l to move" <CR>')
-vim.keymap.set("n", "<up>", '<cmd>echo "Use k to move" <CR>')
-vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move" <CR>')
+vim.keymap.set("n", "<left>", "<cmd>echo 'Use h to move' <CR>")
+vim.keymap.set("n", "<right>", "<cmd>echo 'Use l to move' <CR>")
+vim.keymap.set("n", "<up>", "<cmd>echo 'Use k to move' <CR>")
+vim.keymap.set("n", "<down>", "<cmd>echo 'Use j to move' <CR>")
 
 -- Folding
-vim.keymap.set("n", "ff", "za")
-vim.keymap.set("v", "ff", "zf")
+vim.keymap.set("n", "ff", "za") -- Toggle fold
+vim.keymap.set("v", "ff", "zf") -- Set fold
 
 -- Yap(Yank around paragraph)
 vim.api.nvim_create_autocmd('TextYankPost', {
