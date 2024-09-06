@@ -65,22 +65,17 @@ return {
             highlight CmpItemAbbrMatch guifg=#7DCFFF
             highlight CmpItemAbbrMatchFuzzy guifg=#7DCFFF
             highlight CmpItemKindVariable guifg=#C3E88D
-            highlight CmpItemKindInterface guifg=#C3E88D
-            highlight CmpItemKindText guifg=#C3E88D
+            highlight CmpItemKindInterface guifg=#674EDE
+            highlight CmpItemKindText guifg=#4E63DE
             highlight CmpItemKindFunction guifg=#F78C6C
             highlight CmpItemKindMethod guifg=#F78C6C
             highlight CmpItemKindKeyword guifg=#FFCB6B
             highlight CmpItemKindProperty guifg=#FFCB6B
             highlight CmpItemKindUnit guifg=#FFCB6B
+            highlight CmpItemKindFile guifg=#964EDE
         ]])
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
-        local icons = {
-            Text = "󰙩",
-            Variables = "",
-            Snippet = "󰅴",
-        }
 
         cmp.setup({
             completion = { completeopt = 'menu, menuone, noinsert'},
@@ -93,7 +88,9 @@ return {
                 ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
                 ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
                 ['<Enter>'] = cmp.mapping.confirm({ select = true}),
-                ["<C-Space"] = cmp.mapping.complete({ select = true}),
+                ["<C-Space>"] = cmp.mapping.complete({ select = true}),
+                ['<M-k>'] = cmp.mapping.select_prev_item(cmp_select),
+                ['<M-j>'] = cmp.mapping.select_next_item(cmp_select),
             }),
             sources = cmp.config.sources({
                 { name = 'nvim_lsp' },
