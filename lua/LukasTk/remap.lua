@@ -8,7 +8,7 @@ vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
--- Quick shorcut 
+-- Quick shorcut
 vim.keymap.set("n", "<leader>sp", "<cmd>set paste!<cr>")
 vim.keymap.set("n", "<leader>ss", "<cmd>w<CR>")
 vim.keymap.set("n", "<leader>wq", "<cmd>wq<CR>")
@@ -25,10 +25,10 @@ vim.keymap.set("n", "ff", "za") -- Toggle fold
 vim.keymap.set("v", "ff", "zf") -- Set fold
 
 -- Yap(Yank around paragraph)
-vim.api.nvim_create_autocmd('TextYankPost', {
-    desc = 'Highlight when yanking (copying) text',
-    group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-    callback = function()
-        vim.highlight.on_yank()
-    end,
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Highlight when yanking (copying) text",
+	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	callback = function()
+		vim.highlight.on_yank()
+	end,
 })
