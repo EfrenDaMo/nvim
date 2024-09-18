@@ -22,6 +22,12 @@ vim.keymap.set("n", "<left>", "<cmd>echo 'Use h to move' <CR>")
 vim.keymap.set("n", "<down>", "<cmd>echo 'Use j to move' <CR>")
 vim.keymap.set("n", "<right>", "<cmd>echo 'Use l to move' <CR>")
 
+-- Moving in insert mode
+vim.keymap.set("i", "<M-k>", "<up>")
+vim.keymap.set("i", "<M-h>", "<left>")
+vim.keymap.set("i", "<M-j>", "<down>")
+vim.keymap.set("i", "<M-l>", "<right>")
+
 -- Keybinds to make split navigation easier.
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })

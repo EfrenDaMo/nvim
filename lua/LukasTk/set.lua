@@ -8,11 +8,9 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
 vim.opt.foldenable = true
-vim.opt.foldmethod = "manual"
-vim.opt.foldcolumn = "1"
+vim.opt.foldcolumn = '1'
 vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 1
-vim.opt.foldnestmax = 5
+vim.opt.foldlevelstart = 99
 
 vim.opt.smartindent = true
 
@@ -34,7 +32,7 @@ vim.opt.signcolumn = "yes"
 
 vim.opt.updatetime = 50
 
-vim.opt.colorcolumn = "150"
+vim.opt.colorcolumn = "130"
 
 vim.opt.showmode = false
 

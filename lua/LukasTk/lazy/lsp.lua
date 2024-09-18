@@ -159,7 +159,7 @@ return {
                 map('gr', require('telescope.builtin').lsp_references, 'Goto References')
                 map('gI', require('telescope.builtin').lsp_implementations, 'Goto Implementation')
                 map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type Definition')
-                map('<leader>ds', require('telescope.builtin').lsp_document_symbols, 'Document Symbols')
+                map('<leader>ds', require('telescope.builtin').lsp_document_symbols, 'Document Symbols Ex.Functions, Variables,etc.')
                 map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace Symbols')
                 map('<leader>rn', vim.lsp.buf.rename, 'Rename')
                 map('<leader>ca', vim.lsp.buf.code_action, 'Code Action', { 'n', 'x' })
