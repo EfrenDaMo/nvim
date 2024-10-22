@@ -1,8 +1,9 @@
 return {
-    "nvim-telescope/telescope.nvim", branch = "0.1.x",
+    "nvim-telescope/telescope.nvim",
+    branch = "0.1.x",
 
     dependencies = {
-        "nvim-lua/plenary.nvim"
+        "nvim-lua/plenary.nvim",
     },
 
     config = function()
@@ -10,9 +11,9 @@ return {
 
         local builtin = require('telescope.builtin')
 
-        vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = 'View git files'})
+        vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = 'View git files' })
         vim.keymap.set("n", "<leader>pf", builtin.find_files, { desc = 'List files' })
-        vim.keymap.set("n", "<leader>vh", builtin.help_tags, { desc = 'View Helptags'})
+        vim.keymap.set("n", "<leader>vh", builtin.help_tags, { desc = 'View Helptags' })
         vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = 'Search Keymaps' })
         vim.keymap.set('n', '<leader>st', builtin.builtin, { desc = 'Search Select Telescope' })
         vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = 'Search current Word' })
@@ -30,12 +31,11 @@ return {
         vim.keymap.set("n", "<leader>pWs", function()
             local word = vim.fn.expand("<cWORD>")
             builtin.grep_string({ search = word })
-
         end, { desc = 'Search for word case sensitive' })
 
         vim.keymap.set("n", "<leader>ps", function()
             builtin.grep_string({ search = vim.fn.input("Grep > ") })
-        end, { desc = 'Search for a grep string'})
+        end, { desc = 'Search for a grep string' })
 
         vim.keymap.set('n', '<leader>sn', function()
             builtin.find_files { cwd = vim.fn.stdpath 'config' }

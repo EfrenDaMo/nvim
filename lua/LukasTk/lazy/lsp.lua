@@ -12,11 +12,42 @@ return {
         "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
         "j-hui/fidget.nvim",
+        "onsails/lspkind-nvim",
     },
 
     config = function()
         local cmp = require('cmp')
         local cmp_lsp = require('cmp_nvim_lsp')
+        local lspkind = require('lspkind')
+
+        local icons = {
+            Text = "",
+            Method = "󰆧",
+            Function = "󰊕",
+            Constructor = "",
+            Field = "󰇽",
+            Variable = "󰂡",
+            Class = "󰠱",
+            Interface = "",
+            Module = "",
+            Property = "󰜢",
+            Unit = "",
+            Value = "󰎠",
+            Enum = "",
+            Keyword = "󰌋",
+            Snippet = "",
+            Color = "󰏘",
+            File = "󰈙",
+            Reference = "",
+            Folder = "󰉋",
+            EnumMember = "",
+            Constant = "󰏿",
+            Struct = "",
+            Event = "",
+            Operator = "󰆕",
+            TypeParameter = "󰅲",
+        }
+
         local capabilities = vim.tbl_deep_extend(
             "force",
             {},
@@ -24,7 +55,15 @@ return {
             cmp_lsp.default_capabilities()
         )
         require("fidget").setup({})
-        require("mason").setup()
+        require("mason").setup({
+            ui = {
+                icons = {
+                    package_installed = "✓",
+                    package_pending = "➜",
+                    package_uninstalled = "✗",
+                },
+            },
+        })
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
@@ -32,14 +71,16 @@ return {
             },
             handlers = {
                 function(server_name)
-                    require("lspconfig")[server_name].setup{
-                        capabilities = capabilities
-                    }
+                    if server_name ~= 'jdtls' then
+                        require("lspconfig")[server_name].setup {
+                            capabilities = capabilities
+                        }
+                    end
                 end,
 
                 ["lua_ls"] = function()
                     local lspconfig = require("lspconfig")
-                    lspconfig.lua_ls.setup{
+                    lspconfig.lua_ls.setup {
                         capabilities = capabilities,
                         settings = {
                             Lua = {
@@ -73,13 +114,13 @@ return {
             highlight CmpItemKindKeyword guifg=#FFCB6B
             highlight CmpItemKindProperty guifg=#FFCB6B
             highlight CmpItemKindUnit guifg=#FFCB6B
-            highlight CmpItemKindFile guifg=#964EDE
+            highlight CmpItemKindFile guifg=#954eda
         ]])
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
         cmp.setup({
-            completion = { completeopt = 'menu, menuone, noinsert'},
+            completion = { completeopt = 'menu, menuone, noinsert' },
             snippet = {
                 expand = function(args)
                     require('luasnip').lsp_expand(args.body)
@@ -88,8 +129,9 @@ return {
             mapping = cmp.mapping.preset.insert({
                 ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
                 ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-                ['<Enter>'] = cmp.mapping.confirm({ select = true}),
-                ["<C-Space>"] = cmp.mapping.complete({ select = true}),
+                ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+
+                ['<M-y>'] = cmp.mapping.confirm({ select = true }),
                 ['<M-k>'] = cmp.mapping.select_prev_item(cmp_select),
                 ['<M-j>'] = cmp.mapping.select_next_item(cmp_select),
             }),
@@ -97,42 +139,40 @@ return {
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' },
             }, {
-                    { name = 'buffer' },
-                }),
-            formatting = {
+                { name = 'buffer' },
+                { name = 'path' },
+            }),
+            formatting = ({
                 format = function(entry, vim_item)
-                    vim_item.kind = ({
-                        Text = "",
-                        Method = "󰆧",
-                        Function = "󰊕",
-                        Constructor = "",
-                        Field = "󰇽",
-                        Variable = "󰂡",
-                        Class = "󰠱",
-                        Interface = "",
-                        Module = "",
-                        Property = "󰜢",
-                        Unit = "",
-                        Value = "󰎠",
-                        Enum = "",
-                        Keyword = "󰌋",
-                        Snippet = "",
-                        Color = "󰏘",
-                        File = "󰈙",
-                        Reference = "",
-                        Folder = "󰉋",
-                        EnumMember = "",
-                        Constant = "󰏿",
-                        Struct = "",
-                        Event = "",
-                        Operator = "󰆕",
-                        TypeParameter = "󰅲",
-                    })[vim_item.kind] .. " " .. vim_item.kind
+                    vim_item.kind = string.format('%s %s', icons[vim_item.kind], vim_item.kind)
+                    vim_item.menu = ({
+                        buffer = "[Buffer]",
+                        nvim_lsp = "[LSP]",
+                        luasnip = "[Snippet]",
+                        nvim_lua = "[Lua]",
+                        path = "[Path]"
+                    })[entry.source.name]
                     return vim_item
                 end,
-            },
+            }),
         })
 
+        cmp.setup.cmdline(':', {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = {
+                { name = 'path' },
+                { name = 'cmdline' }
+            }
+        })
+
+        cmp.setup.cmdline('/', {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = {
+                { name = 'buffer' },
+            }
+        })
+
+        --[[
         vim.diagnostic.config({
             float = {
                 focusable = false,
@@ -143,6 +183,7 @@ return {
                 prefix = "",
             },
         })
+        ]] --
 
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
@@ -159,7 +200,8 @@ return {
                 map('gr', require('telescope.builtin').lsp_references, 'Goto References')
                 map('gI', require('telescope.builtin').lsp_implementations, 'Goto Implementation')
                 map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type Definition')
-                map('<leader>ds', require('telescope.builtin').lsp_document_symbols, 'Document Symbols Ex.Functions, Variables,etc.')
+                map('<leader>ds', require('telescope.builtin').lsp_document_symbols,
+                    'Document Symbols Ex.Functions, Variables,etc.')
                 map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace Symbols')
                 map('<leader>rn', vim.lsp.buf.rename, 'Rename')
                 map('<leader>ca', vim.lsp.buf.code_action, 'Code Action', { 'n', 'x' })
@@ -194,7 +236,19 @@ return {
                         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
                     end, 'Toggle Inlay Hints')
                 end
+
+                if client and client.supports_method("textDocument/formatting") then
+                    vim.api.nvim_create_autocmd("BufWritePre", {
+                        buffer = event.buf,
+                        callback = function()
+                            vim.lsp.buf.format({ buf = event.buf })
+                        end,
+                    })
+                end
             end,
         })
+
+        require('lspconfig').clangd.setup({})
+        require('lspconfig').gleam.setup({})
     end
 }

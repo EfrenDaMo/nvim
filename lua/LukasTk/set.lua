@@ -2,6 +2,9 @@ vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.fixendofline = false
 
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 3
+
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
@@ -43,5 +46,15 @@ vim.opt.inccommand = "split"
 vim.opt.mouse = "a"
 
 vim.schedule(function()
-	vim.opt.clipboard = "unnamedplus"
+    vim.opt.clipboard = "unnamedplus"
 end)
+
+local notify = vim.notify
+
+vim.notify = function(msg, ...)
+    if msg:match("warning: multiple different client offset_encodings") then
+        return
+    end
+
+    notify(msg, ...)
+end
