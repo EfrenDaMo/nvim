@@ -18,34 +18,36 @@ return {
     config = function()
         local cmp = require('cmp')
         local cmp_lsp = require('cmp_nvim_lsp')
-        local lspkind = require('lspkind')
 
         local icons = {
-            Text = "",
-            Method = "󰆧",
-            Function = "󰊕",
-            Constructor = "",
-            Field = "󰇽",
-            Variable = "󰂡",
-            Class = "󰠱",
-            Interface = "",
-            Module = "",
-            Property = "󰜢",
-            Unit = "",
-            Value = "󰎠",
-            Enum = "",
-            Keyword = "󰌋",
-            Snippet = "",
-            Color = "󰏘",
-            File = "󰈙",
-            Reference = "",
-            Folder = "󰉋",
-            EnumMember = "",
-            Constant = "󰏿",
-            Struct = "",
-            Event = "",
-            Operator = "󰆕",
-            TypeParameter = "󰅲",
+            Array         = " ",
+            Boolean       = "󰨙 ",
+            Class         = "󰠱 ",
+            Color         = "󰏘 ",
+            Constant      = "󰏿 ",
+            Constructor   = " ",
+            Enum          = " ",
+            EnumMember    = " ",
+            Event         = " ",
+            Field         = "󰇽 ",
+            File          = "󰈙 ",
+            Folder        = "󰉋 ",
+            Function      = "󰊕 ",
+            Interface     = " ",
+            Keyword       = "󰌋 ",
+            Method        = "󰊕 ",
+            Module        = " ",
+            Namespace     = "󰦮 ",
+            Operator      = " ",
+            Property      = " ",
+            Reference     = " ",
+            Struct        = " ",
+            Snippet       = " ",
+            Text          = " ",
+            TypeParameter = " ",
+            Unit          = " ",
+            Value         = "󰎠 ",
+            Variable      = "󰂡 ",
         }
 
         local capabilities = vim.tbl_deep_extend(
@@ -93,7 +95,7 @@ return {
                                         "before_each",
                                         "after_each"
                                     },
-                                }
+                                },
                             }
                         }
                     }
@@ -248,7 +250,9 @@ return {
             end,
         })
 
+
         require('lspconfig').clangd.setup({})
         require('lspconfig').gleam.setup({})
+        require('lspconfig').gdscript.setup({})
     end
 }

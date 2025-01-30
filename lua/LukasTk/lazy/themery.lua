@@ -23,6 +23,7 @@ local colorschemes = {
     "rose-pine-main",
     "rose-pine-moon",
     "terafox",
+    "tokyodark",
     "tokyonight-night",
     "tokyonight-moon",
     "tokyonight-storm",

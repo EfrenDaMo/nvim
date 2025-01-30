@@ -7,7 +7,16 @@ return {
     },
 
     config = function()
-        require('telescope').setup({})
+        require('telescope').setup({
+            defaults = {
+                mappings = {
+                    i = {
+                        ["<M-j>"] = require('telescope.actions').move_selection_next,
+                        ["<M-k>"] = require('telescope.actions').move_selection_previous,
+                    },
+                }
+            }
+        })
 
         local builtin = require('telescope.builtin')
 

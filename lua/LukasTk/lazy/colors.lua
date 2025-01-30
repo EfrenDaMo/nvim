@@ -33,7 +33,8 @@ return {
 
         config = function()
             require("tokyonight").setup({
-                terminal_colors = true
+                terminal_colors = true,
+
             })
             --vim.cmd("colorscheme tokyonight")
         end
@@ -94,4 +95,10 @@ return {
             })
         end,
     },
+    {
+        "tiagovla/tokyodark.nvim",
+        config = function(_, opts)
+            require("tokyodark").setup(opts) -- calling setup is optional
+        end,
+    }
 }

@@ -17,8 +17,6 @@ local config = {
         '-Declipse.product=org.eclipse.jdt.ls.core.product',
         '-Dlog.protocol=true',
         '-Dlog.level=ALL',
-        '-Xmx1g',
-        '--add-modules=ALL-SYSTEM',
         '--add-opens',
         'java.base/java.util=ALL-UNNAMED',
         '--add-opens',
@@ -45,6 +43,7 @@ local config = {
     init_options = {
         bundels = {}
     },
+
 }
 
 require('jdtls').start_or_attach(config)
@@ -60,9 +59,6 @@ vim.keymap.set('v', '<leader>crm', "<Esc><Cmd>lua require('jdtls').extraact_meth
     { desc = 'Extract Method' })
 vim.keymap.set('n', '<leader>ab', '<Cmd>!ant<CR>', { desc = 'Run Ant Build' })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = { "*.java" },
-    callback = function()
-        vim.lsp.buf.format({ async = true })
-    end,
-})
+vim.keymap.set('n', '<leader>fm', '<Cmd>lua vim.lsp.buf.format({ async = true }) <CR>', { desc = "Format file" })
+
+vim.api.nvim_set_hl(0, "@lsp.type.modifier.java", { link = "@keyword" })
