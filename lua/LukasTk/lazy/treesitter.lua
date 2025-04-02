@@ -1,40 +1,44 @@
 return {
-	"nvim-treesitter/nvim-treesitter",
-	build = ":TSUpdate",
-	config = function()
-		require("nvim-treesitter.configs").setup({
-			ensure_installed = {
-				"vimdoc",
-				"c",
-				"lua",
-				"bash",
-				"java",
-			},
+	{
+		"nvim-treesitter/nvim-treesitter",
+		event = { "BufReadPost", "BufNewFile" },
+		build = ":TSUpdate",
 
-			sync_install = false,
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				ensure_installed = {
+					"vimdoc",
+					"c",
+					"lua",
+					"bash",
+					"java",
+				},
 
-			auto_install = true,
+				sync_install = false,
 
-			indent = {
-				enable = true,
-			},
+				auto_install = true,
 
-			highlight = {
-				enable = true,
+				indent = {
+					enable = true,
+				},
 
-				additional_vim_regex_highlighting = { "markdown" },
-			},
-		})
+				highlight = {
+					enable = true,
 
-		local treesitter_parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-		treesitter_parser_config.templ = {
-			install_info = {
-				url = "https://github.com/vrischmann/tree-sitter-templ.git",
-				files = { "src/parser.c", "src/scanner.c" },
-				branch = "master",
-			},
-		}
+					additional_vim_regex_highlighting = { "markdown" },
+				},
+			})
 
-		vim.treesitter.language.register("templ", "templ")
-	end,
+			local treesitter_parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+			treesitter_parser_config.templ = {
+				install_info = {
+					url = "https://github.com/vrischmann/tree-sitter-templ.git",
+					files = { "src/parser.c", "src/scanner.c" },
+					branch = "master",
+				},
+			}
+
+			vim.treesitter.language.register("templ", "templ")
+		end,
+	},
 }

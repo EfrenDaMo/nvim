@@ -9,7 +9,7 @@ return {
 			enabled = true,
 			duration = 30,
 			easing = "linear",
-			fps = 60
+			fps = 60,
 		},
 
 		dim = {
@@ -17,7 +17,7 @@ return {
 
 			scope = {
 				min_size = 3,
-				max_size = 30
+				max_size = 30,
 			},
 
 			animate = {
@@ -38,7 +38,7 @@ return {
 				enabled = true,
 				style = "up_down",
 				duration = {
-					step = 10
+					step = 10,
 				},
 			},
 
@@ -53,23 +53,7 @@ return {
 					corner_top = "╭",
 					corner_bottom = "╰",
 				},
-			}
-		},
-
-		scroll = {
-			enabled = true,
-
-			animate = {
-				duration = {
-					step = 10,
-				}
 			},
-
-			animate_repeat = {
-				duration = {
-					step = 10
-				}
-			}
 		},
 	},
 }

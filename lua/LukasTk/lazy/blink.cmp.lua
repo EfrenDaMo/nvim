@@ -1,72 +1,124 @@
 return {
-	'saghen/blink.cmp',
-	dependencies = 'rafamadriz/friendly-snippets',
-	--"L3MON4D3/LuaSnip",
-	version = '*',
+	{
+		"xzbdmw/colorful-menu.nvim",
+		event = { "BufReadPost", "BufNewFile" },
+		config = function()
+			require("colorful-menu").setup({
+				ls = {
+					lua_ls = {
+						arguments_hl = "@variable.parameter",
+					},
 
-	---@module 'blink.cmp'
-	---@type blink.cmp.Config
-	opts = {
-		keymap = {
-			preset = 'default',
+					fallback = true,
+					fallback_extra_info_hl = "@comment",
+				},
+				fallback_highlight = "@variable",
+				max_width = 60,
+			})
+		end,
+	},
+	{
+		"saghen/blink.cmp",
+		after = "colorful-menu",
+		event = { "BufReadPost", "BufNewFile" },
+		dependencies = "rafamadriz/friendly-snippets",
+		version = "*",
 
-			['<M-y>'] = { 'select_and_accept' },
-			['<M-k>'] = { 'select_prev', 'fallback' },
-			['<M-j>'] = { 'select_next', 'fallback' },
-		},
+		---@module 'blink.cmp'
+		---@type blink.cmp.Config
+		opts = {
+			keymap = {
+				preset = "default",
 
-		appearance = {
-			use_nvim_cmp_as_default = true,
-			nerd_font_variant = 'mono'
-		},
-
-		sources = {
-			default = { 'lsp', 'path', 'snippets', 'buffer' },
-		},
-
-		cmdline = {
-			enabled = true,
-
-			completion = {
-				menu = { auto_show = true },
-				ghost_text = { enabled = true }
+				["<M-y>"] = { "select_and_accept" },
+				["<M-k>"] = { "select_prev", "fallback" },
+				["<M-j>"] = { "select_next", "fallback" },
 			},
-		},
 
-		term = {
-			enabled = true,
-		},
-
-		completion = {
-			accept = {
-				auto_brackets = {
-					enabled = true
-				}
+			appearance = {
+				use_nvim_cmp_as_default = true,
+				nerd_font_variant = "mono",
 			},
-			menu = {
-				auto_show = true,
-				draw = {
-					treesitter = { "lsp" },
-					columns = {
-						{ "label", "label_description", gap = 1 },
-						{ "kind_icon", "kind" }
-					}
+
+			sources = {
+				default = { "lsp", "path", "snippets", "buffer" },
+			},
+
+			cmdline = {
+				enabled = true,
+
+				completion = {
+					menu = { auto_show = true },
+					ghost_text = { enabled = true },
 				},
 			},
-			documentation = {
-				auto_show = true,
-				auto_show_delay_ms = 100,
+
+			term = {
+				enabled = true,
 			},
-			ghost_text = {
-				enabled = true
-			}
-		},
 
-		signature = {
-			enabled = true
-		},
+			completion = {
+				accept = {
+					auto_brackets = {
+						enabled = true,
+					},
+				},
+				menu = {
+					auto_show = true,
+					border = "rounded",
+					draw = {
+						treesitter = { "lsp" },
+						columns = { { "kind_icon", gap = 1 }, { "label", gap = 1 }, { gap = 1, "kind" } },
+						components = {
+							label = {
+								width = { fill = false, max = 60 },
+								text = function(ctx)
+									local highlights_info = require("colorful-menu").blink_highlights(ctx)
+									if highlights_info ~= nil then
+										return highlights_info.label
+									else
+										return ctx.label
+									end
+								end,
+								highlight = function(ctx)
+									local highlights = {}
+									local highlights_info = require("colorful-menu").blink_highlights(ctx)
+									if highlights_info ~= nil then
+										highlights = highlights_info.highlights
+									end
+									for _, idx in ipairs(ctx.label_matched_indices) do
+										table.insert(highlights, { idx, idx + 1, group = "BlinkCmpLabelMatch" })
+									end
+									-- Do something else
+									return highlights
+								end,
+							},
+						},
+					},
+				},
+				documentation = {
+					auto_show = true,
+					auto_show_delay_ms = 100,
 
-		fuzzy = { implementation = "prefer_rust_with_warning" }
+					window = {
+						border = "rounded",
+					},
+				},
+				ghost_text = {
+					enabled = false,
+				},
+			},
+
+			signature = {
+				enabled = true,
+
+				window = {
+					border = "rounded",
+				},
+			},
+
+			fuzzy = { implementation = "prefer_rust_with_warning" },
+		},
+		opts_extend = { "sources.default" },
 	},
-	opts_extend = { "sources.default" }
 }

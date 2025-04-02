@@ -12,12 +12,11 @@ return {
 		scope = { enabled = true },
 		toggle = { enabled = true },
 		bigfile = { enabled = true },
-		quickfile = { enabled = true },
 		statuscolumn = { enabled = true },
 
 		scratch = {
 			enable = true,
-			name = "Scratchpad"
+			name = "Scratchpad",
 		},
 	},
 }

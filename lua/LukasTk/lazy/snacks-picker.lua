@@ -7,7 +7,7 @@ return {
 	opts = {
 		explorer = {
 			enabled = true,
-			replace_netrw = false
+			replace_netrw = false,
 		},
 
 		picker = {
@@ -15,6 +15,7 @@ return {
 
 			-- Telescope layout
 			layout = {
+				cycle = true,
 				reverse = true,
 				layout = {
 					box = "horizontal",
@@ -25,8 +26,14 @@ return {
 					border = "rounded",
 					{
 						box = "vertical",
-						{ win = "list",  title = " Results ", title_pos = "center", border = "rounded" },
-						{ win = "input", height = 1,          border = "rounded",   title = "{title} {live} {flags}", title_pos = "center" },
+						{ win = "list", title = " Results ", title_pos = "center", border = "rounded" },
+						{
+							win = "input",
+							height = 1,
+							border = "rounded",
+							title = "{title} {live} {flags}",
+							title_pos = "center",
+						},
 					},
 					{
 						win = "preview",
@@ -37,8 +44,13 @@ return {
 					},
 				},
 			},
+			matcher = {
+				cwd_bonus = true,
+				frecency = true,
+			},
 
 			sources = {
+				files = { hidden = true },
 				explorer = {
 					auto_close = true,
 					layout = {
@@ -58,10 +70,10 @@ return {
 								title = "{title} {live} {flags}",
 								title_pos = "center",
 							},
-							{ win = "list",    border = "none" },
+							{ win = "list", border = "none" },
 							{ win = "preview", title = "{preview}", height = 0.4, border = "top" },
 						},
-					}
+					},
 				},
 
 				colorschemes = {
@@ -79,13 +91,13 @@ return {
 							{ win = "input", height = 1, border = "bottom" },
 							{
 								box = "horizontal",
-								{ win = "list",    border = "none" },
+								{ win = "list", border = "none" },
 								{ win = "preview", title = "{preview}", width = 0.6, border = "left" },
 							},
 						},
 					},
-				}
-			}
+				},
+			},
 		},
 	},
 }

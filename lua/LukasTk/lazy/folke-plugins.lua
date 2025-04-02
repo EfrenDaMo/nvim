@@ -1,8 +1,8 @@
 return {
 	{
-		'folke/todo-comments.nvim',
+		"folke/todo-comments.nvim",
 		event = { "BufReadPost", "BufNewFile" },
-		dependencies = { 'nvim-lua/plenary.nvim' },
+		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = {
 			keywords = {
 				HACK = { icon = " ", color = "#FB7C24" },
@@ -10,9 +10,21 @@ return {
 			},
 		},
 		keys = {
-			{ "<leader>st", function() Snacks.picker.todo_comments() end,                                          desc = "Todo" },
-			{ "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "Todo/Fix/Fixme" },
-		}
+			{
+				"<leader>st",
+				function()
+					Snacks.picker.todo_comments()
+				end,
+				desc = "Todo",
+			},
+			{
+				"<leader>sT",
+				function()
+					Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
+				end,
+				desc = "Todo/Fix/Fixme",
+			},
+		},
 	},
 	{
 		"folke/trouble.nvim",
@@ -54,18 +66,35 @@ return {
 	{
 		"folke/persistence.nvim",
 		lazy = true,
-		opts = {}
+		opts = {},
 	},
 	{
-		'folke/lazydev.nvim',
-		ft = 'lua',
-		dependencies = { 'Bilal2453/luvit-meta' },
+		"folke/lazydev.nvim",
+		ft = "lua",
+		dependencies = { "Bilal2453/luvit-meta" },
 
 		opts = {
 			library = {
-				{ path = 'luvit-meta/library', words = { 'vim%.uv' } },
-				{ path = "snacks.nvim",        words = { "Snacks" } },
+				{ path = "luvit-meta/library", words = { "vim%.uv" } },
+				{ path = "snacks.nvim", words = { "Snacks" } },
 			},
 		},
 	},
+	--[[
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+		},
+
+		config = function()
+			require("noice").setup({
+				lsp = { progress = { enabled = false } },
+				messages = { enabled = false },
+			})
+		end,
+	},
+	]]
+	--
 }
