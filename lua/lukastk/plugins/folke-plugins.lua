@@ -80,21 +80,4 @@ return {
 			},
 		},
 	},
-	--[[
-	{
-		"folke/noice.nvim",
-		event = "VeryLazy",
-		dependencies = {
-			"MunifTanjim/nui.nvim",
-		},
-
-		config = function()
-			require("noice").setup({
-				lsp = { progress = { enabled = false } },
-				messages = { enabled = false },
-			})
-		end,
-	},
-	]]
-	--
 }

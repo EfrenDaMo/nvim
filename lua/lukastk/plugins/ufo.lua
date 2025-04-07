@@ -4,15 +4,6 @@ return {
 	dependencies = "kevinhwang91/promise-async",
 
 	config = function()
-		vim.keymap.set('n', '<leadr>Ff', require('ufo').openAllFolds, { desc = "Open all folds" })
-		vim.keymap.set('n', '<leader>FF', require('ufo').closeAllFolds, { desc = "Close all folds" })
-		vim.keymap.set('n', '<leader>FP', function()
-			local winid = require('ufo').peekFoldedLinesUnderCursor()
-			if not winid then
-				vim.lsp.buf.hover()
-			end
-		end, { desc = "Peek Fold" })
-
 		local handler = function(virtText, lnum, endLnum, width, truncate)
 			local newVirtText = {}
 			local suffix = (' 󰁂 %d '):format(endLnum - lnum)

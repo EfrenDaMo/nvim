@@ -13,10 +13,8 @@ return {
 		toggle = { enabled = true },
 		bigfile = { enabled = true },
 		statuscolumn = { enabled = true },
-
-		scratch = {
-			enable = true,
-			name = "Scratchpad",
-		},
+		git = { enabled = true },
+		lazygit = { enabled = true },
+		gitbrowse = { enabled = true },
 	},
 }

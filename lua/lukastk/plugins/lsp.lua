@@ -23,17 +23,11 @@ return {
 				go = { "goimports-reviser" },
 				c = { "clang-format" },
 				php = { "pretty-php" },
-				js = { "js-beautify" },
+                python = { "ruff_format" },
+				--js = { "js-beautify" },
 				--css = { "css-beautify" },
 				html = { "html-beautify" },
 				zig = { "zigfmt" },
-				python = function(bufnr)
-					if require("conform").get_formatter_info("ruff_format", bufnr).available then
-						return { "ruff_format" }
-					else
-						return { "isort", "black" }
-					end
-				end,
 			},
 
 			format_on_save = {

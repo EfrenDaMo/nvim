@@ -12,21 +12,6 @@ return {
 			fps = 60,
 		},
 
-		dim = {
-			enabled = true,
-
-			scope = {
-				min_size = 3,
-				max_size = 30,
-			},
-
-			animate = {
-				duration = {
-					step = 10,
-				},
-			},
-		},
-
 		indent = {
 			indent = {
 				enabled = true,

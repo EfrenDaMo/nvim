@@ -78,10 +78,20 @@ return {
 		{ "gy",              function() Snacks.picker.lsp_type_definitions() end,  desc = "Goto T[y]pe Definition" },
 		{ "<leader>ss",      function() Snacks.picker.lsp_symbols() end,           desc = "LSP Symbols Picker" },
 		{ "<leader>sS",      function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols Picker" },
+
 		-- Set toggle stuff
 		vkm.set("n", "<leader>td", function() Snacks.toggle.dim():toggle() end, { desc = "Toggle dimming" }),
 		vkm.set("n", "<leader>tD", function() Snacks.toggle.diagnostics():toggle() end, { desc = "Toggle Diagnostics" }),
 		vkm.set("n", "<leader>tz", function() Snacks.toggle.zen():toggle() end, { desc = "Toggle Zen Mode" }),
 		vkm.set("n", "<leader>tZ", function() Snacks.toggle.zoom():toggle() end, { desc = "Toggle Zen Mode" }),
+
+		-- Git keys
+		{ "<leader>gb", function() Snacks.git.blame_line() end,   desc = "Show git blame" },
+		{ "<leader>gB", function() Snacks.gitbrowse.open() end,   desc = "Open git browser" },
+
+		-- Lazy git
+		{ "<leader>gl", function() Snacks.lazygit.log() end,      desc = "Open Lazy git log in nvim" },
+		{ "<leader>lg", function() Snacks.lazygit.open() end,     desc = "Open Lazy git window in nvim" },
+		{ "<leader>gf", function() Snacks.lazygit.log_file() end, desc = "Open Lazy git log for file in nvim" },
 	},
 }
