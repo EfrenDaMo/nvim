@@ -1,7 +1,6 @@
 return {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPost", "BufNewFile" },
-
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "saghen/blink.cmp",
         "stevearc/conform.nvim",
@@ -10,19 +9,19 @@ return {
     },
 
     config = function()
+        local util = require("lspconfig.util")
         local lspconfig = require("lspconfig")
-        local capabilities = require("blink.cmp").get_lsp_capabilities()
 
         require("conform").setup({
             formatters_by_ft = {
-                lua = { "stylua" },
-                go = { "goimports-reviser" },
                 c = { "clang-format" },
-                php = { "pretty-php" },
-                python = { "ruff_format" },
-                --js = { "js-beautify" },
                 --css = { "css-beautify" },
+                go = { "goimports-reviser" },
                 html = { "html-beautify" },
+                --js = { "js-beautify" },
+                lua = { "stylua" },
+                php = { "intelephense" },
+                python = { "ruff_format" },
                 zig = { "zigfmt" },
             },
 
@@ -32,10 +31,6 @@ return {
             },
 
             formatters = {
-                ["js-beautify"] = {
-                    command = "html-beautify",
-                    args = {},
-                },
                 ["css-beautify"] = {
                     command = "html-beautify",
                     args = {},
@@ -43,6 +38,10 @@ return {
                 ["html-beautify"] = {
                     command = "html-beautify",
                     args = { "--indent-size", "4", "-I" },
+                },
+                ["js-beautify"] = {
+                    command = "html-beautify",
+                    args = {},
                 },
             },
         })
@@ -57,83 +56,120 @@ return {
             },
         })
 
-        require("mason-lspconfig").setup({
-            ensure_installed = {
-                "lua_ls",
-                "clangd",
-                "basedpyright",
-                "gopls",
-                "rust_analyzer",
-                "zls",
+        local capabilities = require("blink.cmp").get_lsp_capabilities()
+        local on_attach = function(_, bufnr)
+            vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,
+                { buffer = bufnr, desc = "Rename object" })
+            vim.keymap.set("n", "<leader>li", ":LspInfo<CR>",
+                { desc = "Show LSP info" })
+        end
+
+        local servers = {
+            "basedpyright",
+            "clangd",
+            "gopls",
+            "html",
+            "intelephense",
+            "jinja_lsp",
+            "lua_ls",
+            "ocamllsp",
+            "rust_analyzer",
+            "zls",
+        }
+
+        local server_configs = {
+            denols = {
+                root_dir = util.root_pattern({ "deno.json", "deno.jsonc" }),
+                single_file_support = false,
+                settings = {}
             },
+            html = {
+                filetypes = { "html", "templ", "php" }
+            },
+            intelephense = {
+                settings = {
+                    intelephense = {
+                        format = { braces = "k&r" }
+                    }
+                }
+            },
+            jinja_lsp = {
+                filetypes = { "html", "jinja" }
+            },
+            lua_ls = {
+                settings = {
+                    Lua = {
+                        runtime = { version = "Lua 5.4.2" },
+                        diagnostics = {
+                            globals = { "bit", "vim", "it", "describe", "before_each", "after_each" },
+                        },
+                    },
+                },
+            },
+            ocamllsp = {
+                cmd = { "dune", "tools", "exec", "ocamllsp" },
 
+                settings = {
+                    codelens = { enable = true },
+                    inlayHints = { enable = true },
+                    syntaxDocumentation = { enable = true },
+                },
+
+                server_capabilities = { semanticTokensProvider = false },
+            },
+            ts_ls = {
+                root_dir = util.root_pattern({ "package.json", "tsconfig.json" }),
+                single_file_support = false,
+                settings = {}
+            },
+            zls = {
+                root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
+                settings = {
+                    zls = {
+                        enable_inlay_hints = true,
+                        enable_snippets = true,
+                        warn_style = true,
+                    },
+                },
+            },
+        }
+
+
+        require("mason-lspconfig").setup({
+            ensure_installed = servers,
             automatic_installation = false,
+        })
 
-            handlers = {
-                function(server_name)
-                    if server_name ~= 'jdtls' then
-                        require("lspconfig")[server_name].setup {
-                            capabilities = capabilities
-                        }
-                    end
-                end,
+        for _, server_name in ipairs(servers) do
+            local config = server_configs[server_name] or {}
+            lspconfig[server_name].setup(vim.tbl_deep_extend("force", {
+                capabilities = capabilities,
+                on_attach = on_attach
+            }, config))
+        end
 
-                ["lua_ls"] = function()
-                    lspconfig.lua_ls.setup({
-                        capabilities = capabilities,
-                        settings = {
-                            Lua = {
-                                runtime = { version = "Lua 5.4.2" },
-                                diagnostics = {
-                                    globals = { "bit", "vim", "it", "describe", "before_each", "after_each" },
-                                },
-                            },
-                        },
-                    })
-                end,
+        vim.g.zig_fmt_parse_errors = 0
+        vim.g.zig_fmt_autosave = 0
 
-                ["ols"] = function()
-                    lspconfig.ols.setup({
-                        init_options = {
-                            enable_format = true,
-                            enable_hover = true,
-                            enable_snippets = true,
-                            enable_inlay_hints = true,
-                            check_args = "-strict-style",
-                        },
-                    })
-                end,
+        lspconfig.clangd.setup({})
+        lspconfig.gdscript.setup({})
+        lspconfig.gleam.setup({})
+        lspconfig.ols.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
 
-                ["zls"] = function()
-                    lspconfig.zls.setup({
-                        capabilities = capabilities,
-                        root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
-                        settings = {
-                            zls = {
-                                enable_inlay_hints = true,
-                                enable_snippets = true,
-                                warn_style = true,
-                            },
-                        },
-                    })
-
-                    vim.g.zig_fmt_parse_errors = 0
-                    vim.g.zig_fmt_autosave = 0
-                end,
+            init_options = {
+                enable_format = true,
+                enable_hover = true,
+                enable_snippets = true,
+                enable_inlay_hints = true,
+                check_args = "-strict-style",
             },
         })
 
-        vim.diagnostic.config({ virtual_text = true, virtual_lines = false })
-        vim.keymap.set("", "<leader>l", function()
-            local config = vim.diagnostic.config() or {}
-            if config.virtual_text then
-                vim.diagnostic.config({ virtual_text = false, virtual_lines = true })
-            else
-                vim.diagnostic.config({ virtual_text = true, virtual_lines = false })
-            end
-        end, { desc = "Toggle lsp_lines" })
-
         vim.diagnostic.config({
+            virtual_text = true,
+            virtual_lines = false,
             signs = {
                 text = {
                     [vim.diagnostic.severity.ERROR] = ' ',
@@ -144,51 +180,13 @@ return {
             }
         })
 
-        vim.api.nvim_create_autocmd("LspAttach", {
-            callback = function(args)
-                _ = args
-                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = 0, desc = "Rename object" })
-            end,
-        })
+        vim.keymap.set("n", "<leader>l", function()
+            local config = vim.diagnostic.config() or {}
 
-        lspconfig.clangd.setup({})
-        lspconfig.denols.setup({
-            single_file_support = true
-        })
-        lspconfig.gdscript.setup({})
-        lspconfig.gleam.setup({})
-        lspconfig.phpactor.setup({
-            root_dir = function()
-                return vim.loop.cwd()
-            end,
-
-            init_options = {
-                ["language_server.diagnostics_on_update"] = false,
-                ["language_server.diagnostics_on_open"] = false,
-                ["language_server.diagnostics_on_save"] = false,
-                ["language_server_phpstan.enabled"] = false,
-                ["language_server_psalm.enabled"] = false,
-            },
-        })
-        lspconfig.html.setup({
-            filetypes = { "html", "templ", "php" },
-        })
-
-        lspconfig.jinja_lsp.setup({
-            capabilities = capabilities,
-            filetypes = { "html", "jinja" },
-        })
-
-        lspconfig["ocamllsp"].setup({
-            cmd = { "dune", "tools", "exec", "ocamllsp" },
-
-            settings = {
-                codelens = { enable = true },
-                inlayHints = { enable = true },
-                syntaxDocumentation = { enable = true },
-            },
-
-            server_capabilities = { semanticTokensProvider = false },
-        })
+            vim.diagnostic.config({
+                virtual_text = not config.virtual_text,
+                virtual_lines = not config.virtual_lines,
+            })
+        end, { desc = "Toggle lsp_lines" })
     end,
 }

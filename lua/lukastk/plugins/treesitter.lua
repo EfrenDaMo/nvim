@@ -1,6 +1,6 @@
 return {
     "nvim-treesitter/nvim-treesitter",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "BufReadPre", "BufNewFile" },
     build = ":TSUpdate",
 
     config = function()
@@ -38,5 +38,9 @@ return {
         }
 
         vim.treesitter.language.register("templ", "templ")
+
+        -- Custom highlight for variables
+        --vim.api.nvim_set_hl(0, "@variable", { fg = "#bb9af7", bold = true })
+        vim.api.nvim_set_hl(0, "@variable", { bold = true })
     end,
 }
