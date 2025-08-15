@@ -12,5 +12,6 @@ return {
             styles = {},
         })
         vim.cmd("colorscheme tokyonight")
+        --vim.cmd(":hi statusline guibg=NONE")
     end,
 }

@@ -6,6 +6,7 @@ return {
         "stevearc/conform.nvim",
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
+        "mfussenegger/nvim-lint",
     },
 
     config = function()
@@ -45,6 +46,11 @@ return {
                 },
             },
         })
+
+        require("lint").linters_by_ft = {
+            --javascript = { "eslint_d" },
+            --typescript = { "eslint_d" },
+        }
 
         require("mason").setup({
             ui = {
@@ -177,7 +183,9 @@ return {
                     [vim.diagnostic.severity.HINT] = '󰋖',
                     [vim.diagnostic.severity.INFO] = ' ',
                 }
-            }
+            },
+            severity_sort = true,
+            update_in_insert = false,
         })
 
         vim.keymap.set("n", "<leader>l", function()
@@ -188,5 +196,11 @@ return {
                 virtual_lines = not config.virtual_lines,
             })
         end, { desc = "Toggle lsp_lines" })
+
+        vim.api.nvim_create_autocmd({ "BufWritePost", "TextChanged" }, {
+            callback = function()
+                require("lint").try_lint()
+            end
+        })
     end,
 }

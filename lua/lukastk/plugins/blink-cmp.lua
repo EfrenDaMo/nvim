@@ -67,6 +67,7 @@ return {
                 menu = {
                     auto_show = true,
                     border = "rounded",
+                    winhighlight = "Normal:CmpDocNormal,FloatBorder:CmpDocBorder",
                     draw = {
                         treesitter = { "lsp" },
                         columns = { { "kind_icon", gap = 1 }, { "label", gap = 1 }, { gap = 1, "kind" } },
@@ -103,6 +104,7 @@ return {
 
                     window = {
                         border = "rounded",
+                        winhighlight = "Normal:CmpDocNormal,FloatBorder:CmpDocBorder",
                     },
                 },
             },
@@ -118,5 +120,7 @@ return {
             fuzzy = { implementation = "prefer_rust_with_warning" },
         },
         opts_extend = { "sources.default" },
+        vim.api.nvim_set_hl(0, "CmpNormal", { bg = "NONE" }),
+        vim.api.nvim_set_hl(0, "CmpDocNormal", { bg = "NONE" })
     },
 }

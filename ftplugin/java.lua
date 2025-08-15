@@ -60,5 +60,7 @@ vim.keymap.set('v', '<leader>crm', "<Esc><Cmd>lua require('jdtls').extract_metho
 vim.keymap.set('n', '<leader>ab', '<Cmd>!ant<CR>', { desc = 'Run Ant Build' })
 
 vim.keymap.set('n', '<leader>fm', '<Cmd>lua vim.lsp.buf.format({ async = true }) <CR>', { desc = "Format file" })
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename object" })
+vim.keymap.set("n", "<leader>li", ":LspInfo<CR>", { desc = "Show LSP info" })
 
 vim.api.nvim_set_hl(0, "@lsp.type.modifier.java", { link = "@keyword" })

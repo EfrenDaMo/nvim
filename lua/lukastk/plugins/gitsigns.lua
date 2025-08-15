@@ -10,5 +10,6 @@ return {
             topdelete = { text = '‾' },
             changedelete = { text = '~' },
         },
+        signs_staged_enable = true,
     },
 }

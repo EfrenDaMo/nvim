@@ -37,7 +37,7 @@ vim.opt.termguicolors = true
 
 -- Enables cross clipboard
 vim.schedule(function()
-	vim.opt.clipboard = "unnamedplus"
+    vim.opt.clipboard = "unnamedplus"
 end)
 
 -- Extra stuff
