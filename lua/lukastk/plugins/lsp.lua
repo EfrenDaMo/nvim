@@ -32,13 +32,13 @@ return {
             },
 
             formatters = {
-                ["css-beautify"] = {
-                    command = "html-beautify",
-                    args = {},
-                },
                 ["html-beautify"] = {
                     command = "html-beautify",
                     args = { "--indent-size", "4", "-I" },
+                },
+                ["css-beautify"] = {
+                    command = "html-beautify",
+                    args = {},
                 },
                 ["js-beautify"] = {
                     command = "html-beautify",
@@ -139,7 +139,6 @@ return {
                 },
             },
         }
-
 
         require("mason-lspconfig").setup({
             ensure_installed = servers,

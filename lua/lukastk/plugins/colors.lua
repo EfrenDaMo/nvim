@@ -7,11 +7,9 @@ return {
     config = function()
         require("tokyonight").setup({
             style = "moon",
-            transparent = true,
             terminal_colors = true,
             styles = {},
         })
         vim.cmd("colorscheme tokyonight")
-        --vim.cmd(":hi statusline guibg=NONE")
     end,
 }
